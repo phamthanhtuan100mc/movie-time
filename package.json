@@ -2,10 +2,15 @@
   "name": "movie-time",
   "version": "1.0.0",
   "description": "watching offline movie but together",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": "https://github.com/phamthanhtuan100mc/movie-time",
   "author": "tuan.pham",
-  "license": "ISC"
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^22.0.0"
+  }
 }
