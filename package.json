@@ -1,0 +1,11 @@
+{
+  "name": "movie-time",
+  "version": "1.0.0",
+  "description": "watching offline movie but together",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "tuan.pham",
+  "license": "ISC"
+}
