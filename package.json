@@ -11,6 +11,13 @@
   "author": "tuan.pham",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^22.0.0"
+    "electron": "^22.1.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "electron-window-state": "^5.0.3"
   }
 }
