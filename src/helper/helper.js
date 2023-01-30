@@ -5,7 +5,7 @@
  * @param {*} seconds 
  */
 function Sleep(seconds) {
-    return new Promise(resolve => {
+    return new Promise(async (resolve) => {
         setTimeout(resolve, seconds * 1000);
     });
 }

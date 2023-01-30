@@ -2,8 +2,11 @@
 
 const { app, dialog, globalShortcut, ipcMain, screen, BrowserWindow } = require('electron');
 const WindowStateKeeper = require('electron-window-state');
-const path = require('path')
 const { Sleep } = require('./helper/helper')
+const { systemPreferences } = require('electron')
+const path = require('path')
+
+// console.log(systemPreferences.isDarkMode())
 
 // // Enable live reload for all the files inside your project directory
 // require('electron-reload')(path.join(__dirname, 'screen'), {
@@ -32,23 +35,9 @@ const createWindow = async () => {
 		}
 	})
 
-	ipcMain.handle('open-file', () => {
-		console.log('receive message open file')
-		return dialog.showOpenDialogSync({
-			properties: [
-				'openFile', 
-				// 'multiSelections'
-			]
-		})
-	})
+	// await Sleep(2);
 
-	Sleep(2000);
-
-	ipcMain.handle('ping', () => {
-		return 'pong';
-	});
-
-	mainWindow.loadFile(path.join(__dirname, 'screen', 'index.html'));
+	mainWindow.loadFile(path.join(__dirname, 'screen', 'start_screen', 'index.html'));
 
 	mainWindow.once('ready-to-show', () => {
 		// splashWindow.destroy();
@@ -57,8 +46,6 @@ const createWindow = async () => {
 
 		// mainWindow.center();
 	})
-
-
 }
 
 const createWindowTest = () => {
@@ -74,36 +61,50 @@ const createWindowTest = () => {
 		return 'pong';
 	});
 
-	mainWindow.loadFile(path.join(__dirname, 'screen', 'test-index.html'));
+	mainWindow.loadFile(path.join(__dirname, 'screen', 'test_screen', 'test-index.html'));
 }
-
 
 app.whenReady().then(() => {
 	createWindow();
 
-	// Handle for mac
+	// Handle open window for mac
 	app.on('activate', () => {
 		if (BrowserWindow.getAllWindows().length === 0) {
 			createWindow();
 		}
 	})
 
-
-
 	// Open dev tools
-	// globalShortcut.register('F12', () => {
-	// 	mainWindow.webContents.openDevTools();
-	// })
-	// globalShortcut.register('CommandOrControl+Shift+C', () => {
-	// 	mainWindow.webContents.openDevTools();
-	// })
+	globalShortcut.register('F12', () => {
+		mainWindow.webContents.openDevTools();
+	})
 
-	
-	
 })
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit()
 	}
+})
+
+ipcMain.handle('ping', () => {
+	app.dock.bounce();
+	return 'pong';
+});
+
+ipcMain.handle('open-file', () => {
+	console.log('receive message open file')
+	const fileName = dialog.showOpenDialogSync({
+		properties: [
+			'openFile', 
+			// 'multiSelections'
+		]
+	})
+
+	console.log(fileName)
+	return fileName;
+})
+
+ipcMain.handle('drop-file', (e, agrs) => {
+	console.log(agrs[0]);
 })
