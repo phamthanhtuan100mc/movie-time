@@ -3,7 +3,7 @@
 const opendFile = document.getElementById('open-file');
 opendFile.addEventListener("click", async () => {
     console.log('test open file');
-    const file = await window.versions.openFile();
+    const file = await window.electron.openFile();
     console.log(file);
 });
 

@@ -95,9 +95,18 @@ ipcMain.handle('ping', () => {
 ipcMain.handle('open-file', () => {
 	console.log('receive message open file')
 	const fileName = dialog.showOpenDialogSync({
+		title: 'Select Video to watch',
+		filters: [
+			{
+				name: 'Movies',
+				extensions: ['mp4', 'mkv', 'mov', 'ts']
+			}
+		],
 		properties: [
-			'openFile', 
-			// 'multiSelections'
+			'openFile',
+			'createDirectory',
+			'promptToCreate',
+			'treatPackageAsDirectory'
 		]
 	})
 
