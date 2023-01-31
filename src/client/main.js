@@ -99,7 +99,7 @@ ipcMain.handle('open-file', () => {
 		filters: [
 			{
 				name: 'Movies',
-				extensions: ['mp4', 'mkv', 'mov', 'ts']
+				extensions: ['mp4', 'mkv', 'mov', 'ts', 'webm']
 			}
 		],
 		properties: [

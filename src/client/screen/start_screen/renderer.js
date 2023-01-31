@@ -1,4 +1,17 @@
 // renderer.js
+import io from 'socket.io-client';
+ 
+const socket = io('http://localhost');
+
+socket.on('connect', function(){
+	console.log('connected to server')
+});
+
+socket.on('event', function(data){});
+
+socket.on('disconnect', function() {
+    console.log('disconnected with server')
+});
 
 const opendFile = document.getElementById('open-file');
 opendFile.addEventListener("click", async () => {
