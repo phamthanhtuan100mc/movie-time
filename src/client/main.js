@@ -5,17 +5,9 @@ const WindowStateKeeper = require('electron-window-state');
 const { Sleep } = require('./helper/helper')
 const { systemPreferences } = require('electron')
 const path = require('path')
+const socket = require('socket.io-client')('http://localhost:3000');
 
-// console.log(systemPreferences.isDarkMode())
-
-// // Enable live reload for all the files inside your project directory
-// require('electron-reload')(path.join(__dirname, 'screen'), {
-
-// 	// Enable live reload for Electron too
-// 	electron: require(`../node_modules/electron`),
-// 	// hardResetMethod: 'exit',
-// 	// forceHardReset: true
-// });
+process.env.SOCKET_PORT = 3000;
 
 let mainWindow = null;
 
@@ -31,6 +23,7 @@ const createWindow = async () => {
 		height: 600,
 		show: false,
 		webPreferences: {
+			webSecurity: true,
 			preload: path.join(__dirname, 'preload.js')
 		}
 	})
@@ -40,6 +33,7 @@ const createWindow = async () => {
 	mainWindow.loadFile(path.join(__dirname, 'screen', 'start_screen', 'index.html'));
 
 	mainWindow.once('ready-to-show', () => {
+		// registerLocalVideoProtocol();
 		// splashWindow.destroy();
 		mainWindow.show();
 		mainWindow.webContents.openDevTools();
@@ -79,6 +73,17 @@ app.whenReady().then(() => {
 		mainWindow.webContents.openDevTools();
 	})
 
+	socket.on('welcome', () => {
+		console.log('on welcome: welcome received renderer');
+		socket.emit('test welcome')
+	});
+	socket.on('ok', () => {
+		console.log("OK received renderer"); // not displayed
+	});
+	socket.on('connect', () => {
+		console.log("on connect: connected renderer"); // displayed
+		socket.emit('test connect');
+	});
 })
 
 app.on('window-all-closed', () => {
@@ -92,7 +97,7 @@ ipcMain.handle('ping', () => {
 	return 'pong';
 });
 
-ipcMain.handle('open-file', () => {
+ipcMain.handle('open-file', async () => {
 	console.log('receive message open file')
 	const fileName = dialog.showOpenDialogSync({
 		title: 'Select Video to watch',
@@ -111,9 +116,25 @@ ipcMain.handle('open-file', () => {
 	})
 
 	console.log(fileName)
-	return fileName;
+	await openVideoScreen();
 })
 
-ipcMain.handle('drop-file', (e, agrs) => {
+ipcMain.handle('drop-file', async (e, agrs) => {
 	console.log(agrs[0]);
+	await openVideoScreen();
 })
+
+const openVideoScreen = async () => {
+	await mainWindow.loadFile(path.join(__dirname, 'screen', 'video_screen', 'index.html'));
+}
+
+// console.log(systemPreferences.isDarkMode())
+
+// // Enable live reload for all the files inside your project directory
+// require('electron-reload')(path.join(__dirname, 'screen'), {
+
+// 	// Enable live reload for Electron too
+// 	electron: require(`../node_modules/electron`),
+// 	// hardResetMethod: 'exit',
+// 	// forceHardReset: true
+// });

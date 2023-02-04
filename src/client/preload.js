@@ -12,6 +12,6 @@ contextBridge.exposeInMainWorld('versions', {
 
 contextBridge.exposeInMainWorld('electron', {
     ping: () => ipcRenderer.invoke('ping'),
-    openFile: () => ipcRenderer.invoke('open-file'),
+    openFileSync: () => ipcRenderer.invoke('open-file'),
     dropFile: (fileName) => ipcRenderer.invoke('drop-file', fileName)
 })
