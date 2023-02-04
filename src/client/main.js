@@ -5,11 +5,13 @@ const WindowStateKeeper = require('electron-window-state');
 const { Sleep } = require('./helper/helper')
 const { systemPreferences } = require('electron')
 const path = require('path')
-const socket = require('socket.io-client')('http://localhost:3000');
+const io = require('socket.io-client');
 
 process.env.SOCKET_PORT = 3000;
+process.env.URL = 'http://localhost';
 
 let mainWindow = null;
+const socket = io(URL + ':' + SOCKET_PORT);
 
 const createWindow = async () => {
 
