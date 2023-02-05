@@ -1,4 +1,7 @@
 const io = require('socket.io')();
+require('dotenv').config()
+
+const port = process.env.PORT || 3000;
 
 io.on('connection', (client) => {
     console.log(client.rooms);
@@ -17,4 +20,6 @@ io.on('connection', (client) => {
     });
   });
   
-  io.listen(3000);
+  io.listen(port, () => {
+    console.log(`Server listening on port: ` + port);
+  });
