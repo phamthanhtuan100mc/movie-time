@@ -12,8 +12,8 @@ const url = process.env.URL;
 const port = process.env.PORT || 3000;
 
 let mainWindow = null;
-// const socket = io(url + ':' + port);
-const socket = io('https://movie-time-by-shunton.glitch.me/');
+
+const socket = io(url);
 
 const createWindow = async () => {
 
@@ -77,16 +77,17 @@ app.whenReady().then(() => {
 		mainWindow.webContents.openDevTools();
 	})
 
+	socket.on('connect', () => {
+		console.log("on connect: connected to server"); // displayed
+		socket.emit('test connect');
+	});
+
 	socket.on('welcome', () => {
-		console.log('on welcome: welcome received renderer');
-		socket.emit('test welcome')
+		console.log('on welcome: received message welcome from server');
+		socket.emit('test')
 	});
 	socket.on('ok', () => {
 		console.log("OK received renderer"); // not displayed
-	});
-	socket.on('connect', () => {
-		console.log("on connect: connected renderer"); // displayed
-		socket.emit('test connect');
 	});
 })
 
