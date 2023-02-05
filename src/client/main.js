@@ -6,12 +6,14 @@ const { Sleep } = require('./helper/helper')
 const { systemPreferences } = require('electron')
 const path = require('path')
 const io = require('socket.io-client');
+require('dotenv').config()
 
-process.env.SOCKET_PORT = 3000;
-process.env.URL = 'http://localhost';
+const url = process.env.URL;
+const port = process.env.PORT || 3000;
 
 let mainWindow = null;
-const socket = io(URL + ':' + SOCKET_PORT);
+// const socket = io(url + ':' + port);
+const socket = io('https://movie-time-by-shunton.glitch.me/');
 
 const createWindow = async () => {
 
